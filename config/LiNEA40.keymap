@@ -62,7 +62,8 @@
             <&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
             <&zip_xy_to_scroll_mapper>,
             <&scroll_runtime_input_processor>;
- // ★ここにも追加
+
+        // ★ここにも追加
     };
 };
 
@@ -86,7 +87,7 @@
         };
 
         CenterClick {
-            bindings = <&mkp MB1>;
+            bindings = <&mkp LCLK>;
             key-positions = <17 16>;
         };
 
