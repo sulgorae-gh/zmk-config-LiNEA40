@@ -86,8 +86,8 @@
             key-positions = <6 7>;
         };
 
-        CenterClick {
-            bindings = <&mkp LCLK>;
+        LeftClick {
+            bindings = <&mkp MB1>;
             key-positions = <17 16>;
         };
 
