@@ -29,5 +29,8 @@ manifest:
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: e9472d6
+    - name: zmk-behavior-runtime-sensor-rotate
+      remote: cormoran
+      revision: main
   self:
     path: config
