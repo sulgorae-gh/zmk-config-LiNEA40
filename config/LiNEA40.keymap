@@ -61,7 +61,8 @@
             <&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
             <&zip_xy_to_scroll_mapper>,
             <&scroll_runtime_input_processor>;
- // ★ここにも追加
+
+        // ★ここにも追加
     };
 };
 
@@ -137,10 +138,10 @@
 
         default_layer {
             bindings = <
-&kp Q          &kp W         &kp E               &kp R    &kp T                                      &kp Y        &kp U  &kp I                &kp O          &kp P
-&kp A          &kp S         &kp D               &kp F    &kp G                                      &kp H        &kp J  &kp K                &kp L          &lt 5 MINUS
-&kp Z          &kp X         &kp C               &kp V    &kp B                                      &kp N        &kp M  &kp COMMA            &kp DOT        &mt RIGHT_SHIFT BACKSPACE
-&mt LCTRL ESC  &kp LEFT_WIN  &mt LEFT_ALT GRAVE  &kp INS  &lt 5 ENTER  &lt 2 TAB    &lt 2 BACKSPACE  &lt 4 SPACE         &lt 6 RIGHT_BRACKET  &kp BACKSLASH  &mt RIGHT_SHIFT SLASH
+&kp Q                 &kp W                    &kp E                        &kp R                      &kp T                                      &kp Y        &kp U                       &kp I                         &kp O                     &kp P
+&HomeRowMods LCTRL A  &HomeRowMods LEFT_ALT S  &HomeRowMods LEFT_COMMAND D  &HomeRowMods LEFT_SHIFT F  &kp G                                      &kp H        &HomeRowMods RIGHT_SHIFT J  &HomeRowMods RIGHT_COMMAND K  &HomeRowMods RIGHT_ALT L  &HomeRowMods RCTRL MINUS
+&kp Z                 &kp X                    &kp C                        &kp V                      &kp B                                      &kp N        &kp M                       &kp COMMA                     &kp DOT                   &mt RIGHT_SHIFT BACKSPACE
+&mt LCTRL ESC         &kp LEFT_WIN             &mt LEFT_ALT GRAVE           &kp INS                    &lt 5 ENTER  &lt 2 TAB    &lt 2 BACKSPACE  &lt 4 SPACE                              &lt 6 RIGHT_BRACKET           &kp BACKSLASH             &mt RIGHT_SHIFT SLASH
             >;
 
             sensor-bindings = <&mouse_scrl SCRL_DOWN SCRL_UP>;
