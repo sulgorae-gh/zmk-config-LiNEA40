@@ -1,7 +1,5 @@
 manifest:
   remotes:
-    - name: zmkfirmware
-      url-base: https://github.com/zmkfirmware
     - name: cormoran
       url-base: https://github.com/cormoran
     - name: inorichi
@@ -31,8 +29,5 @@ manifest:
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: e9472d6
-    - name: zmk-behavior-runtime-sensor-rotate
-      remote: cormoran
-      revision: main
   self:
     path: config
