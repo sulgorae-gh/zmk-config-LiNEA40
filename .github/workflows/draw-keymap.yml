@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "config/LiNEA40.keymap" # ここを正確な名前に合わせました
+      - "config/LiNEA40.keymap"
       - "keymap_drawer.config.yaml"
 
 jobs:
@@ -20,9 +20,12 @@ jobs:
 
       - name: Parse and Draw
         run: |
-          # 正確なパスを指定
-          keymap parse -z config/LiNEA40.keymap > keymap.yaml
-          keymap draw keymap.yaml > keymap.svg
+          # 1. config直下のファイルを指定してYAML化 (詳細ログ付き)
+          # --verbose をつけることで、なぜエラーになったか原因を吐き出させます
+          keymap --verbose parse -z config/LiNEA40.keymap > keymap.yaml
+
+          # 2. YAMLからSVGを描画
+          keymap --verbose draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
         run: |
