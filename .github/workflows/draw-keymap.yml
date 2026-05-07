@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "config/**.keymap"
+      - "config/LiNEA40.keymap" # ここを正確な名前に合わせました
       - "keymap_drawer.config.yaml"
 
 jobs:
@@ -20,8 +20,8 @@ jobs:
 
       - name: Parse and Draw
         run: |
-          # linea40のkeymapファイルの場所に合わせて修正
-          keymap parse -z config/linea40.keymap > keymap.yaml
+          # 正確なパスを指定
+          keymap parse -z config/LiNEA40.keymap > keymap.yaml
           keymap draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
