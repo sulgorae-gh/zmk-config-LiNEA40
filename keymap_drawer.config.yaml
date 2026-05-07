@@ -1,0 +1,5 @@
+draw_config:
+  draw_layers: true
+parse_config:
+  zmk_combined: true
+  check_side_offsets: true
