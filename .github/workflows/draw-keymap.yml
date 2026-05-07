@@ -20,12 +20,9 @@ jobs:
 
       - name: Parse and Draw
         run: |
-          # 1. config直下のファイルを指定してYAML化 (詳細ログ付き)
-          # --verbose をつけることで、なぜエラーになったか原因を吐き出させます
-          keymap --verbose parse -z config/LiNEA40.keymap > keymap.yaml
-
-          # 2. YAMLからSVGを描画
-          keymap --verbose draw keymap.yaml > keymap.svg
+          # ファイル名を正確に LiNEA40.keymap に指定しました
+          keymap parse -z config/LiNEA40.keymap > keymap.yaml
+          keymap draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
         run: |
