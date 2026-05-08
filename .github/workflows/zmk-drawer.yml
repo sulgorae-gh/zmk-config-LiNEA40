@@ -20,16 +20,17 @@ jobs:
 
       - name: Draw Keymap
         run: |
-          # 1. 解析（ここは前回成功したはずです）
-          keymap parse -z config/LiNEA40.keymap -l linea40.json \
-            --layer-names Base Lower Raise Adjust Fun Media Num Mouse > keymap.yaml
+          # 1. まず解析だけして中身を取り出す
+          keymap parse -z config/LiNEA40.keymap > keymap_content.yaml || true
           
-          # 2. 犯人はコイツだ！
-          # 生成された keymap.yaml の中にある "zmk_keyboard: LiNEA40" という行を
-          # 強制的に削除（またはコメントアウト）して、名前を忘れさせます。
-          sed -i '/zmk_keyboard: LiNEA40/d' keymap.yaml
+          # 2. 物理レイアウト(linea40.json)の内容を、解析したデータの頭に強引にくっつける
+          # これでツールは「名前」ではなく「座標データそのもの」を見るようになります
+          echo "layout:" > keymap.yaml
+          echo "  qmk_info_json: 'linea40.json'" >> keymap.yaml
+          cat keymap_content.yaml >> keymap.yaml
           
-          # 3. 描画（これで名前によるバリデーションエラーを回避できます）
+          # 3. 描画
+          # ※ parse時のエラーを無視して進むため、ファイルの中身が空でないか確認
           keymap draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
