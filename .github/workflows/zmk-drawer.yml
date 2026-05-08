@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "config/LiNEA40.keymap"
+      - "keymap.yaml"
 
 jobs:
   draw:
@@ -13,16 +13,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Install Keymap Drawer
         run: pip install keymap-drawer
-
       - name: Draw Keymap
-        run: |
-          # 1. あなたの .keymap ファイルから直接「描画用データ」を無理やり引っこ抜きます
-          # (解析エラーを避けるため、解析コマンドを通さずに直接描画に回します)
-          keymap draw --select-layers Base Lower Raise -j '{"layout": {"qmk_keyboard": "linea40"}}' config/LiNEA40.keymap > keymap.svg
-
+        run: keymap draw keymap.yaml > keymap.svg
       - name: Commit and Push
         run: |
           git config --local user.name "github-actions[bot]"
