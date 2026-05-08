@@ -25,24 +25,20 @@ jobs:
           def parse():
               with open('config/LiNEA40.keymap', 'r') as f:
                   content = f.read()
-              # bindings = <...> の中身を抽出
               layers_raw = re.findall(r'bindings\s*=\s*<(.*?)>', content, re.DOTALL)
               if not layers_raw: return
               
               with open('keymap.yaml', 'w') as f:
-                  # 物理レイアウト情報を記述
+                  # qmk_info_json で直接指定
                   f.write(\"layout: {qmk_info_json: 'linea40.json'}\\n\")
                   f.write(\"layers:\\n\")
                   for i, raw in enumerate(layers_raw):
-                      # キーを分割
                       keys = [k.strip() for k in raw.replace('\\n', ' ').split(' ') if k.strip()]
-                      f.write(f\"  L{i}:\\n\")
-                      # 重要な修正：各キーを \" \" で囲んで YAML のアンカーエラーを回避
+                      # &kp などの特殊文字を \" \" で囲んで安全にする
                       quoted_keys = [f'\"{k}\"' for k in keys]
-                      f.write(f\"    - [{', '.join(quoted_keys)}]\\n\")
+                      f.write(f\"  L{i}: [{', '.join(quoted_keys)}]\\n\")
           parse()
           "
-          # エラーの原因になる parse 工程を飛ばして、直接 draw を実行
           keymap draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
