@@ -1,9 +1,9 @@
 name: ZMK Drawer Final
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # 手動実行用
   push:
     paths:
-      - "keymap.yaml"
+      - "config/LiNEA40.keymap" # Editorで編集して保存された時に自動起動
 
 jobs:
   draw:
@@ -13,14 +13,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Install Keymap Drawer
         run: pip install keymap-drawer
-      - name: Draw Keymap
-        run: keymap draw keymap.yaml > keymap.svg
+
+      - name: Parse and Draw Keymap
+        run: |
+          # 1. あなたの .keymap ファイルから「最新のキー設定」を読み取る
+          # ※レイアウトを強制指定することで、あの「LiNEA40を知らないエラー」を回避します
+          keymap parse -z config/LiNEA40.keymap --output-keymap-yields-layout -l '{"ortho_layout": {"rows": 4, "columns": 12}}' > keymap_temp.yaml
+          
+          # 2. 解析したデータ(keymap_temp.yaml)を使って図面(SVG)を作成
+          keymap draw keymap_temp.yaml > keymap.svg
+
       - name: Commit and Push
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add keymap.svg
-          git commit -m "Update keymap visualization" || exit 0
-          git push origin main
+          # 変更があればコミットして保存
+          if ! git diff --staged --quiet; then
+            git commit -m "Update keymap visualization from source"
+            git push origin main
+          fi
