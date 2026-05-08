@@ -53,3 +53,11 @@ jobs:
           git add keymap-drawer/*.pdf
           git diff --cached --quiet || \
             git commit -m "chore: update keymap PDF" && git push
+
+      - name: Upload PDF to Google Drive
+        uses: adityak74/google-drive-upload-git-action@main
+        with:
+          credentials: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
+          filename: keymap-drawer/LiNEA40.pdf
+          folderId: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+          overwrite: true
