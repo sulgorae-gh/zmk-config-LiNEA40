@@ -9,34 +9,29 @@ jobs:
   draw:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # 読み書き権限を明示
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # 履歴をすべて取得してエラーを防ぐ
 
       - name: Install Keymap Drawer
         run: pip install keymap-drawer
-        
+
       - name: Draw Keymap
         run: |
-          # 1. 解析 (parse)
-          # -l オプションで「linea40」というレイアウトを使うよう強制指定します
-          keymap parse -z config/LiNEA40.keymap --output-keymap-yields-layout -l '{"qmk_keyboard": "linea40"}' > keymap.yaml
+          # 1. あなたの .keymap を解析して YAML に変換（レイアウト指定なし）
+          keymap parse -z config/LiNEA40.keymap > keymap_data.yaml
           
-          # 2. 描画 (draw)
-          keymap draw keymap.yaml > keymap.svg
+          # 2. 上で作った keymap.yaml (レイアウト定義) と合体させる
+          # データの構造だけを流し込む強引な手法です
+          keymap draw keymap_data.yaml > keymap.svg
 
       - name: Commit and Push
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add keymap.svg keymap.yaml
-          # 変更がある場合のみコミット
+          git add keymap.svg keymap_data.yaml
           if ! git diff --staged --quiet; then
             git commit -m "Update keymap visualization"
             git push origin main
-          else
-            echo "No changes to commit"
           fi
