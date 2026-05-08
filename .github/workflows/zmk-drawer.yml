@@ -1,0 +1,34 @@
+name: ZMK Drawer Final
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "config/**.keymap"
+
+jobs:
+  draw:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Keymap Drawer
+        run: pip install keymap-drawer
+
+      - name: Draw Keymap
+        run: |
+          # 名前を決め打ちせず、configフォルダ内の全ての.keymapを対象にします
+          for f in config/*.keymap; do
+            keymap parse -z "$f" > keymap.yaml
+            keymap draw keymap.yaml > keymap.svg
+          done
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add keymap.svg keymap.yaml
+          git commit -m "Update keymap visualization" || exit 0
+          git push
