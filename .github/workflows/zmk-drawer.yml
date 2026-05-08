@@ -20,12 +20,16 @@ jobs:
 
       - name: Draw Keymap
         run: |
-          # 1. あなたの .keymap を解析
-          # レイヤー名が足りないと怒られないよう、8つ分（あるいはそれ以上）の名前を用意します
+          # 1. 解析（ここは前回成功したはずです）
           keymap parse -z config/LiNEA40.keymap -l linea40.json \
             --layer-names Base Lower Raise Adjust Fun Media Num Mouse > keymap.yaml
           
-          # 2. 描画
+          # 2. 犯人はコイツだ！
+          # 生成された keymap.yaml の中にある "zmk_keyboard: LiNEA40" という行を
+          # 強制的に削除（またはコメントアウト）して、名前を忘れさせます。
+          sed -i '/zmk_keyboard: LiNEA40/d' keymap.yaml
+          
+          # 3. 描画（これで名前によるバリデーションエラーを回避できます）
           keymap draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
