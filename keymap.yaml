@@ -1,4 +1,0 @@
-layout: {qmk_keyboard: linea40}
-layers:
-  Base:
-  - {t: ' ', type: held}  # ここはActionsが自動で埋めるので適当でOKです
