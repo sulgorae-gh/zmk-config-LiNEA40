@@ -21,13 +21,11 @@ jobs:
         
       - name: Draw Keymap
         run: |
-          # 1. LiNEA40 という名前を一時的に "linea40"（ツールが知っている名前）に置換してパース
-          sed 's/LiNEA40/linea40/g' config/LiNEA40.keymap > temp.keymap
+          # 1. 解析 (parse)
+          # -l オプションで「linea40」というレイアウトを使うよう強制指定します
+          keymap parse -z config/LiNEA40.keymap --output-keymap-yields-layout -l '{"qmk_keyboard": "linea40"}' > keymap.yaml
           
-          # 2. ツールが知っている名前として解析させる
-          keymap parse -z temp.keymap > keymap.yaml
-          
-          # 3. 描画する
+          # 2. 描画 (draw)
           keymap draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
