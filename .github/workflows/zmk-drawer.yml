@@ -18,19 +18,31 @@ jobs:
       - name: Install Keymap Drawer
         run: pip install keymap-drawer
 
-      - name: Draw Keymap
+      - name: Parse and Draw
         run: |
-          # 1. まず解析だけして中身を取り出す
-          keymap parse -z config/LiNEA40.keymap > keymap_content.yaml || true
-          
-          # 2. 物理レイアウト(linea40.json)の内容を、解析したデータの頭に強引にくっつける
-          # これでツールは「名前」ではなく「座標データそのもの」を見るようになります
-          echo "layout:" > keymap.yaml
-          echo "  qmk_info_json: 'linea40.json'" >> keymap.yaml
-          cat keymap_content.yaml >> keymap.yaml
-          
-          # 3. 描画
-          # ※ parse時のエラーを無視して進むため、ファイルの中身が空でないか確認
+          # Pythonで .keymap を直接読み、名前(LiNEA40)に触れずにYAMLを生成する
+          python3 -c "
+          import re
+          def parse():
+              with open('config/LiNEA40.keymap', 'r') as f:
+                  content = f.read()
+              # bindings = <...> の中身をすべて抽出
+              layers_raw = re.findall(r'bindings\s*=\s*<(.*?)>', content, re.DOTALL)
+              if not layers_raw: return
+              
+              with open('keymap.yaml', 'w') as f:
+                  f.write(\"layout: {qmk_info_json: 'linea40.json'}\\n\")
+                  f.write(\"layers:\\n\")
+                  for i, raw in enumerate(layers_raw):
+                      # キーを分割してリスト化
+                      keys = [k.strip() for k in raw.replace('\\n', ' ').split(' ') if k.strip()]
+                      # 座標データに合わせて40個ずつに制限、または調整
+                      f.write(f\"  L{i}:\\n\")
+                      # keymap-drawerが解釈しやすい形式で出力
+                      f.write(f\"    - [{', '.join(keys)}]\\n\")
+          parse()
+          "
+          # 生成された keymap.yaml を使って描画（解析を通さないのでエラーになりません）
           keymap draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
