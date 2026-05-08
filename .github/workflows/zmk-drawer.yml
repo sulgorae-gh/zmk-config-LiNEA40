@@ -18,18 +18,17 @@ jobs:
 
       - name: Install Keymap Drawer
         run: pip install keymap-drawer
-
+        
       - name: Draw Keymap
         run: |
-          # 1. 物理レイアウト情報を込めた keymap.yaml をベースに、現在のキーマップをパース
-          # ※LiNEA40の定義がないため、強引に標準レイアウトを指定して作成します
-          keymap parse -z config/LiNEA40.keymap -b keymap.yaml > keymap_final.yaml
+          # 1. LiNEA40 という名前を一時的に "linea40"（ツールが知っている名前）に置換してパース
+          sed 's/LiNEA40/linea40/g' config/LiNEA40.keymap > temp.keymap
           
-          # 2. 出来上がった最終的な YAML から SVG を描画
-          keymap draw keymap_final.yaml > keymap.svg
+          # 2. ツールが知っている名前として解析させる
+          keymap parse -z temp.keymap > keymap.yaml
           
-          # 3. 後のためにファイル名を整理
-          mv keymap_final.yaml keymap.yaml
+          # 3. 描画する
+          keymap draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
         run: |
