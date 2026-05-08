@@ -21,11 +21,15 @@ jobs:
 
       - name: Draw Keymap
         run: |
-          # 全ての .keymap ファイルを処理
-          for f in config/*.keymap; do
-            keymap parse -z "$f" > keymap.yaml
-            keymap draw keymap.yaml > keymap.svg
-          done
+          # 1. 物理レイアウト情報を込めた keymap.yaml をベースに、現在のキーマップをパース
+          # ※LiNEA40の定義がないため、強引に標準レイアウトを指定して作成します
+          keymap parse -z config/LiNEA40.keymap -b keymap.yaml > keymap_final.yaml
+          
+          # 2. 出来上がった最終的な YAML から SVG を描画
+          keymap draw keymap_final.yaml > keymap.svg
+          
+          # 3. 後のためにファイル名を整理
+          mv keymap_final.yaml keymap.yaml
 
       - name: Commit and Push
         run: |
