@@ -1,5 +1,4 @@
-layout:
-  qmk_keyboard: linea40 # これで「40キーの並び」を代用させます
+layout: {qmk_keyboard: linea40}
 layers:
-  # ここは空でOKです。このあとGitHub Actionsが中身を自動で埋めてくれます。
-  Base: []
+  Base:
+  - {t: ' ', type: held}  # ここはActionsが自動で埋めるので適当でOKです
