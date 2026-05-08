@@ -3,24 +3,6 @@
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include <input/processors/runtime-input-processor.dtsi>
 
-//mouse cursol
-
-&mmv {
-    delay-ms = <20>;
-    trigger-period-ms = <5>;
-    time-to-max-speed-ms = <100>;
-    acceleration-exponent = <2>;
-};
-
-//mouse scroll
-
-&msc {
-    delay-ms = <3>;
-    trigger-period-ms = <3>;
-    time-to-max-speed-ms = <100>;
-    acceleration-exponent = <0>;
-};
-
 / {
     input_processors {
         zip_wheel_scaler: zip_wheel_scaler {
