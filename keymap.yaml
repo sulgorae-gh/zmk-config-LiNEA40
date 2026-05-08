@@ -1,8 +1,8 @@
 layout:
-  ortho_layout:  # ここを ortho から ortho_layout に修正しました
+  ortho_layout:
     split: false
     rows: 4
-    cols: 12
+    columns: 12  # ここを cols から columns に変更しました
 layers:
   Base:
   # 1行目
@@ -11,7 +11,7 @@ layers:
   - [A, S, D, F, G, '', '', H, J, K, L, ';']
   # 3行目
   - [Z, X, C, V, B, '', '', N, M, ',', '.', /]
-  # 4行目（ご指定の配置）
+  # 4行目
   - [
       ESC, Gui, Alt, {t: '○', type: ghost}, Enter, Tab,
       Bksp, Space, {t: '●', type: ghost}, ']', '\', /
