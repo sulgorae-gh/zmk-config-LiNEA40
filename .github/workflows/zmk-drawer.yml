@@ -1,9 +1,9 @@
 name: ZMK Drawer Final
 on:
-  workflow_dispatch:  # 手動実行用
+  workflow_dispatch:
   push:
     paths:
-      - "config/LiNEA40.keymap" # Editorで編集して保存された時に自動起動
+      - "config/LiNEA40.keymap"
 
 jobs:
   draw:
@@ -19,19 +19,22 @@ jobs:
 
       - name: Parse and Draw Keymap
         run: |
-          # 1. あなたの .keymap ファイルから「最新のキー設定」を読み取る
-          # ※レイアウトを強制指定することで、あの「LiNEA40を知らないエラー」を回避します
-          keymap parse -z config/LiNEA40.keymap --output-keymap-yields-layout -l '{"ortho_layout": {"rows": 4, "columns": 12}}' > keymap_temp.yaml
+          # 1. まずは .keymap を解析して YAML にする（この時点ではレイアウト不明でエラーが出る可能性が高い）
+          # エラーを無視して進めるために "|| true" をつけますが、中身は書き出されます
+          keymap parse -z config/LiNEA40.keymap > keymap_temp.yaml || true
           
-          # 2. 解析したデータ(keymap_temp.yaml)を使って図面(SVG)を作成
-          keymap draw keymap_temp.yaml > keymap.svg
+          # 2. 生成された YAML の先頭に、私たちが苦労して見つけた「正しいレイアウト定義」を上書き合体させます
+          echo 'layout: {ortho_layout: {split: false, rows: 4, columns: 12}}' > layout_head.yaml
+          cat layout_head.yaml keymap_temp.yaml > keymap_final.yaml
+          
+          # 3. 出来上がった完璧な YAML で描画
+          keymap draw keymap_final.yaml > keymap.svg
 
       - name: Commit and Push
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add keymap.svg
-          # 変更があればコミットして保存
           if ! git diff --staged --quiet; then
             git commit -m "Update keymap visualization from source"
             git push origin main
