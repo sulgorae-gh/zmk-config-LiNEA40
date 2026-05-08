@@ -32,6 +32,9 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Pull latest (drawジョブのコミットを取得)
+        run: git pull --rebase origin main
+
       - name: Install CairoSVG
         run: pip install cairosvg
 
