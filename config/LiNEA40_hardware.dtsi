@@ -14,23 +14,3 @@
         };
     };
 };
-
-&msc_input_listener {
-    speed_up {
-        layers = <FUNCTION>;
-        input-processors = <&zip_wheel_scaler 3 1>; //スクロールを3倍速にする
-    };
-};
-
-&trackball_listener {
-    input-processors = <&mouse_runtime_input_processor>; // ★これを追加
-    scroller {
-        layers = <SCROLL>;
-        input-processors =
-            <&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
-            <&zip_xy_to_scroll_mapper>,
-            <&scroll_runtime_input_processor>;
-
-        // ★ここにも追加
-    };
-};
