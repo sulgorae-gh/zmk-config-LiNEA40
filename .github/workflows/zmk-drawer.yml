@@ -20,8 +20,10 @@ jobs:
 
       - name: Draw Keymap
         run: |
-          # 1. あなたの .keymap を、自作の設計図 (linea40.json) を使って解析
-          keymap parse -z config/LiNEA40.keymap -l linea40.json > keymap.yaml
+          # 1. あなたの .keymap を解析
+          # レイヤー名が足りないと怒られないよう、8つ分（あるいはそれ以上）の名前を用意します
+          keymap parse -z config/LiNEA40.keymap -l linea40.json \
+            --layer-names Base Lower Raise Adjust Fun Media Num Mouse > keymap.yaml
           
           # 2. 描画
           keymap draw keymap.yaml > keymap.svg
