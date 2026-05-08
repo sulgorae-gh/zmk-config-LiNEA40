@@ -20,29 +20,29 @@ jobs:
 
       - name: Parse and Draw
         run: |
-          # Pythonで .keymap を直接読み、名前(LiNEA40)に触れずにYAMLを生成する
           python3 -c "
           import re
           def parse():
               with open('config/LiNEA40.keymap', 'r') as f:
                   content = f.read()
-              # bindings = <...> の中身をすべて抽出
+              # bindings = <...> の中身を抽出
               layers_raw = re.findall(r'bindings\s*=\s*<(.*?)>', content, re.DOTALL)
               if not layers_raw: return
               
               with open('keymap.yaml', 'w') as f:
+                  # 物理レイアウト情報を記述
                   f.write(\"layout: {qmk_info_json: 'linea40.json'}\\n\")
                   f.write(\"layers:\\n\")
                   for i, raw in enumerate(layers_raw):
-                      # キーを分割してリスト化
+                      # キーを分割
                       keys = [k.strip() for k in raw.replace('\\n', ' ').split(' ') if k.strip()]
-                      # 座標データに合わせて40個ずつに制限、または調整
                       f.write(f\"  L{i}:\\n\")
-                      # keymap-drawerが解釈しやすい形式で出力
-                      f.write(f\"    - [{', '.join(keys)}]\\n\")
+                      # 重要な修正：各キーを \" \" で囲んで YAML のアンカーエラーを回避
+                      quoted_keys = [f'\"{k}\"' for k in keys]
+                      f.write(f\"    - [{', '.join(quoted_keys)}]\\n\")
           parse()
           "
-          # 生成された keymap.yaml を使って描画（解析を通さないのでエラーになりません）
+          # エラーの原因になる parse 工程を飛ばして、直接 draw を実行
           keymap draw keymap.yaml > keymap.svg
 
       - name: Commit and Push
