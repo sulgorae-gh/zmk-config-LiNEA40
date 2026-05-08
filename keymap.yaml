@@ -1,7 +1,18 @@
-layout: {qmk_keyboard: linea40}
+layout:
+  ortho:
+    split: false
+    rows: 4
+    cols: 12
 layers:
   Base:
-  - [Q, W, E, R, T, Y, U, I, O, P]
-  - [A, S, D, F, G, H, J, K, L, ';']
-  - [Z, X, C, V, B, N, M, ',', '.', /]
-  - [ESC, Tab, Gui, Alt, Shift, Ctrl, Space, Enter, Bksp, Del]
+  # 1行目
+  - [Q, W, E, R, T, '', '', Y, U, I, O, P]
+  # 2行目
+  - [A, S, D, F, G, '', '', H, J, K, L, ';']
+  # 3行目
+  - [Z, X, C, V, B, '', '', N, M, ',', '.', /]
+  # 4行目（ご指定の配置）
+  - [
+      ESC, Gui, Alt, {t: '○', type: ghost}, Enter, Tab,   # 左：4番目○、6番目Tab(内側)
+      Bksp, Space, {t: '●', type: ghost}, ']', '\', /    # 右：7番目Bksp(内側)、9番目●
+    ]
