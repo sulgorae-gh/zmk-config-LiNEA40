@@ -1,5 +1,55 @@
-draw_config:
-  draw_layers: true
 parse_config:
-  zmk_combined: true
-  check_side_offsets: true
+  # ZMKのincludeパスを追加
+  zmk_additional_includes:
+    - config/
+
+  # カスタムビヘイビアの表示名変換
+  raw_binding_map:
+    "&bootloader": "BOOT"
+    "&studio_unlock": "STUDIO"
+    "&mkp MB1": "🖱L"
+    "&mkp MB2": "🖱R"
+    "&mkp MB3": "🖱M"
+    "&mkp MB4": "🖱Bk"
+    "&mkp MB5": "🖱Fw"
+
+  # HomeRowModsのhold側をわかりやすく
+  zmk_keycode_map:
+    LEFT_SHIFT: "⇧"
+    RIGHT_SHIFT: "⇧"
+    LEFT_ALT: "Alt"
+    RIGHT_ALT: "Alt"
+    LEFT_GUI: "GUI"
+    RIGHT_GUI: "GUI"
+    LCTRL: "Ctrl"
+    RCTRL: "Ctrl"
+
+  # センサーバインディングはスキップ（エラー回避）
+  skip_binding_parsing_for_behaviors:
+    - sensor_rotate_kp
+    - mouse_wheel_scrl
+
+draw_config:
+  # キーサイズ
+  key_w: 56
+  key_h: 52
+
+  # 分割キーボードの左右の隙間
+  split_gap: 30
+
+  # コンボを別ダイアグラムで表示（7個あるので見やすい）
+  separate_combo_diagrams: true
+
+  # フォント
+  key_rx: 6
+  key_ry: 6
+
+  # レイヤーごとの背景色
+  svg_extra_style: |
+    svg .layer-default_layer { fill: #f5f5f5; }
+    svg .layer-MOUSE    { fill: #e8f4fd; }
+    svg .layer-MARK     { fill: #fef9e7; }
+    svg .layer-CURSOR   { fill: #e9f7ef; }
+    svg .layer-FUNCTION { fill: #fdedec; }
+    svg .layer-SCROLL   { fill: #f4ecf7; }
+    svg .layer-WIRELESS { fill: #eaf0fb; }
